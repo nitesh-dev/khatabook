@@ -1,6 +1,62 @@
-.h1 {
-  color: red;
-  p {
-    color: green;
+.home{
+  padding: 0;
+}
+
+.header {
+  background-color: var(--primary);
+  min-height: 100px;
+  padding: 0 !important;
+  overflow-y: auto;
+
+  .history_card {
+    margin: 1rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    background-color: var(--surface);
+    min-height: 100px;
+    border-radius: 8px;
+    padding: 1rem;
+
+    > div {
+      display: flex;
+      flex-direction: column;
+
+      > span:first-child {
+        font-size: var(--medium-font);
+        font-weight: 500;
+      }
+
+      > span.danger {
+        color: var(--danger);
+      }
+
+
+      > span.success {
+        color: var(--success);
+      }
+
+      p{
+        color: var(--on-surface-light);
+      }
+
+
+    }
   }
 }
+
+
+
+.content{
+  padding: 1rem;
+
+
+  .title{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+}
+
+

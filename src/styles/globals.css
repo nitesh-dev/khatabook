@@ -7,10 +7,19 @@
 
   --surface: #ffffff;
   --on-surface: #000000;
+  --on-surface-light: #333333;
   --surface-variant: #f5f5f5;
 
   --border-color: #eaeaea;
+  --danger: #ff0000;
+  --success: #00ff00;
+
+  --big-font: 42px;
+  --medium-font: 24px;
+  --small-font: 16px;
+  --tiny-font: 14px;
 }
+
 
 body {
   margin: 0;
@@ -33,5 +42,8 @@ body {
   max-width: 800px;
   margin: 0 auto;
   background-color: white;
+}
+
+.page > * {
   padding: 1rem;
 }

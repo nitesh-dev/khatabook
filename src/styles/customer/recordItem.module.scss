@@ -1,0 +1,45 @@
+.list_item {
+  min-height: 120px;
+  border: 1px dashed var(--border-color);
+  width: 100%;
+  gap: 1rem;
+  cursor: pointer;
+  margin: 4px 0;
+  display: grid;
+  grid-template-rows: 1fr max-content;
+
+  .content {
+    padding: 1rem;
+    padding-top: 1.5rem;
+    position: relative;
+
+    span {
+      position: absolute;
+      top: 4px;
+      right: 4px;
+      border-radius: 20px;
+      border: 1px solid var(--border-color);
+      font-size: var(--tiny-font);
+      background-color: var(--surface-variant);
+      padding: 0.2em 1em;
+    }
+  }
+
+  .footer {
+    height: 32px;
+    display: flex;
+    justify-content: space-between;
+    border-top: 1px dashed var(--border-color);
+
+    > div {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: var(--tiny-font);
+      width: 100%;
+      border-left: 1px dashed var(--border-color);
+      padding: 0 1rem;
+      background-color: var(--surface-variant);
+    }
+  }
+}

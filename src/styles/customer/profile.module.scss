@@ -1,0 +1,54 @@
+.screen{
+    padding: 0;
+  }
+
+
+  
+  .header {
+    background-color: var(--primary);
+    min-height: 100px;
+    padding: 0 !important;
+    overflow-y: auto;
+
+    .title_bar{
+        min-height: 60px;
+        display: flex;
+        align-items: center;
+
+        div{
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+    }
+  
+    .history_card {
+      margin: 1rem;
+      background-color: var(--surface);
+      min-height: 100px;
+      border-radius: 8px;
+      padding: 1rem;
+  
+      > div {
+        display: flex;
+      }
+    }
+  }
+  
+  
+  
+  .content{
+    padding: 1rem;
+  
+  
+    .title{
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    
+  }
+  
+  
+  

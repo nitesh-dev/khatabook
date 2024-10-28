@@ -1,0 +1,22 @@
+.list_item {
+  min-height: 80px;
+  border-bottom: 1px solid var(--border-color);
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr max-content;
+  gap: 1rem;
+  align-items: center;
+  cursor: pointer;
+
+  .left{
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .right{
+    h3{
+        color: var(--danger);
+    }
+  }
+}
