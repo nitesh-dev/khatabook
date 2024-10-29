@@ -8,9 +8,9 @@ import {
   hashPassword,
   makeResponse,
   validateHeader,
-} from "../utils";
+} from "../../utils";
 
-import prisma from "../../../../lib/prisma";
+import prisma from "../../../../../lib/prisma";
 
 interface Body {
   oldPassword: string;

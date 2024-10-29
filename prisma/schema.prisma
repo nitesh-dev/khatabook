@@ -7,7 +7,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 model borrow_record {
   id          Int          @id @default(autoincrement())
   customer_id Int
@@ -16,9 +15,9 @@ model borrow_record {
   borrow_date DateTime
   status      RecordStatus @default(PENDING)
   created_at  DateTime     @default(now())
-  pay_records  pay_record[]
+  pay_records pay_record[]
   customer    customer?    @relation(fields: [customerId], references: [id])
-  customerId  Int?
+  customerId  Int
 }
 
 enum RecordStatus {
@@ -45,13 +44,12 @@ model customer {
 }
 
 model pay_record {
-  id           Int      @id @default(autoincrement())
-  record_id    BigInt
-  amount       Float
-  notes        String
-  payment_date DateTime
-  created_at   DateTime @default(now())
-
-  borrow_record   borrow_record? @relation(fields: [borrow_recordId], references: [id])
-  borrow_recordId Int?
+  id               Int            @id @default(autoincrement())
+  record_id        BigInt
+  amount           Float
+  notes            String
+  payment_date     DateTime
+  created_at       DateTime       @default(now())
+  borrow_record    borrow_record? @relation(fields: [borrow_record_id], references: [id])
+  borrow_record_id Int
 }
