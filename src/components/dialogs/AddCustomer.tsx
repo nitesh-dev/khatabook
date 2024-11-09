@@ -35,7 +35,7 @@ export default function AddCustomerDialog() {
     resolver: zodResolver(formSchema),
     defaultValues: {},
   });
-  const { status, mutate, error } = usePromise(ApiAll.createCustomer<any>);
+  const { status, mutate, error, data } = usePromise(ApiAll.createCustomer);
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);

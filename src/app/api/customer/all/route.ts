@@ -34,8 +34,9 @@ export function GET(request: Request) {
           },
         },
       });
+      customers[0].records
 
-      return makeResponse({ customers }, 200);
+      return makeResponse({ data: customers }, 200);
     });
   });
 }

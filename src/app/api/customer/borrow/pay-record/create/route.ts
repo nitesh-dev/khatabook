@@ -2,6 +2,7 @@
 import {
   catchAsyncError,
   comparePassword,
+  CustomError,
   CustomRequest,
   generateToken,
   handleRoute,
@@ -12,7 +13,6 @@ import {
 
 import prisma from "../../../../../../../lib/prisma";
 import { RecordStatus } from "@prisma/client";
-import { CustomError } from "@/pages/utils";
 
 interface Body {
   borrowId: number;
@@ -57,12 +57,12 @@ export function POST(request: Request) {
             amount: req.body.amount,
             payment_date: date,
             notes: notes,
-            record_id: req.body.borrowId,
+            borrow_record_id: req.body.borrowId,
           },
         }),
       ]);
 
-      return makeResponse({ res }, 200);
+      return makeResponse({ data: res[1] }, 200);
     });
   });
 }

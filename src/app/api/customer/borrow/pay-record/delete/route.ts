@@ -2,6 +2,7 @@
 import {
   catchAsyncError,
   comparePassword,
+  CustomError,
   CustomRequest,
   generateToken,
   handleRoute,
@@ -12,7 +13,6 @@ import {
 
 import prisma from "../../../../../../../lib/prisma";
 import { RecordStatus } from "@prisma/client";
-import { CustomError } from "@/pages/utils";
 
 export function DELETE(request: Request) {
   return catchAsyncError(() => {
@@ -49,7 +49,7 @@ export function DELETE(request: Request) {
         }),
       ]);
 
-      return makeResponse({ res }, 200);
+      return makeResponse({ data: res[1] }, 200);
     });
   });
 }

@@ -1,4 +1,6 @@
 "use client";
+import ApiAll from "@/lib/api/ApiAll";
+import { AxiosResult } from "@/lib/DataType";
 import { useState, useCallback } from "react";
 
 export type Status = "initial" | "loading" | "success" | "error";
@@ -36,19 +38,39 @@ export function usePromise<D, E = string, Args = any>(
   return { data, error, status, mutate };
 }
 
+export function useApi<D, Args = any>(
+  promise: (args: Args) => Promise<AxiosResult<D>>,
+  { initial, errorFormatter }: PromiseConfig<string> = { initial: false }
+) {
+  const {
+    data: result,
+    status,
+    error: _error,
+    mutate,
+  } = usePromise<AxiosResult<D>, string>(promise, { initial, errorFormatter });
+  const out = { mutate, status, error: _error, statusCode: 500 } as {
+    data?: D;
+    error?: string;
+    status: Status;
+    mutate: typeof mutate;
+    statusCode: number;
+  };
+  if (result) {
+    const { data, error, isOk } = result;
+    out.data = data || undefined;
+    if (!isOk) out.status = "error";
+    out.error = error?.message;
+    out.statusCode = error?.statusCode || 200;
+  }
+  return out;
+}
+const a = useApi(ApiAll.createCustomer);
+
 export async function sleep(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 // import useSWR from "swr";
-
-export class CustomError extends Error {
-  status: number;
-  constructor(message: string, status: number) {
-    super(message);
-    this.status = status;
-  }
-}
 
 // export type JsonFetcherType = {
 //   url: string;

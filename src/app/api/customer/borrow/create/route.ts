@@ -30,11 +30,11 @@ export function POST(request: Request) {
 
       const record = await prisma.borrow_record.create({
         data: {
-          customer_id: req.body.cusId,
           amount: req.body.amount,
           borrow_date: date,
           status: RecordStatus.PENDING,
           rem_amount: req.body.amount,
+          customer_id: req.body.cusId,
         },
       });
 

@@ -12,6 +12,8 @@ export type CustomRequest<T> = {
   headers: any;
 };
 
+
+
 export async function handleRoute<T>(
   request: Request,
   callback: (req: CustomRequest<T>) => Promise<Response>
@@ -81,8 +83,13 @@ export async function catchAsyncError(
   try {
     return await callback();
   } catch (e: any) {
-    console.log(e.cause.code);
-    return makeResponse({ message: e.message }, e.cause.code);
+    // console.log(e.cause.code);
+    let code = 500
+    if (e instanceof CustomError) {
+      code = e.code
+    }
+    console.log(e)
+    return makeResponse({ message: e.message }, code);
   }
 }
 
@@ -115,7 +122,7 @@ export function validateHeader(headers: any) {
 }
 
 export class CustomError extends Error {
-  constructor(message: string, code: number) {
+  constructor(message: string, public code: number) {
     super(message, { cause: { code } });
   }
 }

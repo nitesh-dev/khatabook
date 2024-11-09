@@ -16,8 +16,7 @@ model borrow_record {
   status      RecordStatus @default(PENDING)
   created_at  DateTime     @default(now())
   pay_records pay_record[]
-  customer    customer?    @relation(fields: [customerId], references: [id])
-  customerId  Int
+  customer    customer?    @relation(fields: [customer_id], references: [id])
 }
 
 enum RecordStatus {
@@ -45,7 +44,6 @@ model customer {
 
 model pay_record {
   id               Int            @id @default(autoincrement())
-  record_id        BigInt
   amount           Float
   notes            String
   payment_date     DateTime
