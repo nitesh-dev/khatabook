@@ -1,5 +1,5 @@
+import { Button } from "@/components/ui/button";
 import {
-  Button,
   DialogActionTrigger,
   DialogBody,
   DialogCloseTrigger,
@@ -9,11 +9,11 @@ import {
   DialogRoot,
   DialogTitle,
   DialogTrigger,
-} from "@chakra-ui/react";
+} from "@/components/ui/dialog";
 
 export default function AddCustomerDialog() {
   return (
-    <DialogRoot>
+    <DialogRoot role="alertdialog">
       <DialogTrigger asChild>
         <Button size="sm">Add Customer</Button>
       </DialogTrigger>
