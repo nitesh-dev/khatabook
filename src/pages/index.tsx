@@ -1,17 +1,21 @@
 import ListItem from "@/components/home/ListItem";
 import styles from "../styles/home.module.scss";
-import { Heading, List, Button } from "@chakra-ui/react";
+import { Heading, List, Button, Spinner } from "@chakra-ui/react";
 import { useEffect } from "react";
 import Api from "@/lib/api/Api";
 import AddCustomerDialog from "@/components/dialogs/AddCustomer";
+import { useApi } from "./utils";
+import { useShallowAppStore } from "@/store/app";
 
 export default function Home() {
-  useEffect(() => {
-    (async () => {
-      const data = await Api.getAllCustomer();
-      console.log(data);
-    })();
-  }, []);
+  const { customers, setCustomers } = useShallowAppStore((s) => ({
+    customers: s.customers,
+    setCustomers: s.setCustomers,
+  }));
+  const { status, error } = useApi(Api.getAllCustomer, {
+    saveData: (data) => setCustomers(data),
+    initial: true,
+  });
 
   return (
     <div className={styles.home}>
@@ -35,13 +39,20 @@ export default function Home() {
           <AddCustomerDialog />
         </div>
         <br />
-        <List.Root>
-          <ListItem />
-          <ListItem />
-          <ListItem />
-          <ListItem />
-          <ListItem />
-        </List.Root>
+        {status == "loading" ? (
+          <Spinner size={"md"} />
+        ) : (
+          <List.Root>
+            {customers.map((c) => (
+              <ListItem
+                name={c.name}
+                borrowed={1000}
+                lastTime={c.updated_at.toString()}
+                key={c.id}
+              />
+            ))}
+          </List.Root>
+        )}
       </div>
     </div>
   );

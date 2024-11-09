@@ -25,7 +25,7 @@ namespace Api {
     return (await AxiosApiInstance.get(
       "/api/customer/all",
       header
-    )) as AxiosResult<Customer>;
+    )) as AxiosResult<Customer[]>;
   }
   type CreateCustomer = {
     name: string;

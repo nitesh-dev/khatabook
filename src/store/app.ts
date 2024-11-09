@@ -33,7 +33,7 @@ export const useAppStore = create<StateAndAction>()(
   }))
 )
 
-export function useShallowAppStore(s: (state: StateAndAction) => StateAndAction) {
+export function useShallowAppStore<U>(s: (state: StateAndAction) => U) {
   return useAppStore(
     useShallow(s)
   )
