@@ -15,6 +15,7 @@ type State = {
 
 type Action = {
   setCustomers: (customers: Customer[]) => void
+  addCustomer: (customer: Customer) => void
 
 }
 
@@ -28,6 +29,11 @@ export const useAppStore = create<StateAndAction>()(
     setCustomers: (customers) => {
       set((state) => {
         state.customers = customers
+      })
+    },
+    addCustomer(customer) {
+      set(s => {
+        s.customers.push(customer)
       })
     },
   }))

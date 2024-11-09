@@ -16,9 +16,10 @@ import { FormEvent, useEffect, useState } from "react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, Controller } from "react-hook-form";
-import { usePromise } from "@/pages/utils";
+import { useApi, usePromise } from "@/pages/utils";
 import Api from "@/lib/api/Api";
 import { toaster } from "../ui/toaster";
+import { useShallowAppStore } from "@/store/app";
 
 const formSchema = z
   .object({
@@ -35,7 +36,13 @@ export default function AddCustomerDialog() {
     resolver: zodResolver(formSchema),
     defaultValues: {},
   });
-  const { status, mutate, error, data } = usePromise(Api.createCustomer);
+  const { customers, addCustomer } = useShallowAppStore((s) => ({
+    customers: s.customers,
+    addCustomer: s.addCustomer,
+  }));
+  const { status, error, mutate } = useApi(Api.createCustomer, {
+    saveData: (data) => addCustomer(data),
+  });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
@@ -49,6 +56,7 @@ export default function AddCustomerDialog() {
       toaster.error({ title: error });
     }
   }, [status]);
+
   return (
     <DialogRoot open={isOpen} role="alertdialog">
       <DialogTrigger asChild>

@@ -6,6 +6,7 @@ import Api from "@/lib/api/Api";
 import AddCustomerDialog from "@/components/dialogs/AddCustomer";
 import { useApi } from "./utils";
 import { useShallowAppStore } from "@/store/app";
+import { toaster } from "@/components/ui/toaster";
 
 export default function Home() {
   const { customers, setCustomers } = useShallowAppStore((s) => ({
@@ -16,6 +17,11 @@ export default function Home() {
     saveData: (data) => setCustomers(data),
     initial: true,
   });
+  useEffect(() => {
+    if (status == "error") {
+      toaster.error({ title: error });
+    }
+  }, [status]);
 
   return (
     <div className={styles.home}>
