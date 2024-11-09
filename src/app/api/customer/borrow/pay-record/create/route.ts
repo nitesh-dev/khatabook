@@ -12,6 +12,7 @@ import {
 
 import prisma from "../../../../../../../lib/prisma";
 import { RecordStatus } from "@prisma/client";
+import { CustomError } from "@/pages/utils";
 
 interface Body {
   borrowId: number;
@@ -35,7 +36,7 @@ export function POST(request: Request) {
         where: { id: req.body.borrowId },
       });
 
-      if (!record) throw new Error("Record not found");
+      if (!record) throw new CustomError("Record not found", 400);
 
       const res = await prisma.$transaction([
         prisma.borrow_record.update({

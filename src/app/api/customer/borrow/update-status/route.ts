@@ -12,6 +12,7 @@ import {
 
 import prisma from "../../../../../../lib/prisma";
 import { RecordStatus } from "@prisma/client";
+import { CustomError } from "@/pages/utils";
 
 interface Body {
   id: number;
@@ -26,9 +27,10 @@ export function PATCH(request: Request) {
 
       // validate the status
       if (!Object.values(RecordStatus).includes(req.body.status))
-        throw new Error(
+        throw new CustomError(
           "Invalid status type it must be one of the following: " +
-            Object.values(RecordStatus)
+            Object.values(RecordStatus),
+          400
         );
 
       const record = await prisma.borrow_record.update({

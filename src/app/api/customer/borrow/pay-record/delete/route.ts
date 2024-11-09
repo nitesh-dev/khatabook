@@ -12,6 +12,7 @@ import {
 
 import prisma from "../../../../../../../lib/prisma";
 import { RecordStatus } from "@prisma/client";
+import { CustomError } from "@/pages/utils";
 
 export function DELETE(request: Request) {
   return catchAsyncError(() => {
@@ -26,7 +27,7 @@ export function DELETE(request: Request) {
         },
       });
 
-      if (!payRecord) throw new Error("Record not found");
+      if (!payRecord) throw new CustomError("Record not found", 400);
 
       // transaction
       const res = await prisma.$transaction([

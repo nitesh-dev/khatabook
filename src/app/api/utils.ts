@@ -81,7 +81,8 @@ export async function catchAsyncError(
   try {
     return await callback();
   } catch (e: any) {
-    return makeResponse({ message: e.message }, 400);
+    console.log(e.cause.code);
+    return makeResponse({ message: e.message }, e.cause.code);
   }
 }
 
@@ -98,19 +99,23 @@ export interface JwtPayload {
 export function verifyToken(token: string): JwtPayload | null {
   try {
     return jwt.verify(token, SECRET_KEY) as JwtPayload;
-  } catch (error) {
-    console.error("Invalid token", error);
-    return null;
+  } catch (error: any) {
+    throw new CustomError("Invalid authorization header provided", 401);
   }
 }
 
 export function validateHeader(headers: any) {
   if (headers.authorization === undefined) {
-    throw new Error("Authorization header is missing");
+    throw new CustomError("Authorization header is missing", 401);
   }
 
   const token = headers.authorization.split(" ")[1];
   const payload = verifyToken(token);
-  if (payload === null) throw new Error("Invalid token");
   return payload;
+}
+
+export class CustomError extends Error {
+  constructor(message: string, code: number) {
+    super(message, { cause: { code } });
+  }
 }

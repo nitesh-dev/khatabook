@@ -2,6 +2,7 @@
 import {
   catchAsyncError,
   comparePassword,
+  CustomError,
   CustomRequest,
   generateToken,
   handleRoute,
@@ -21,13 +22,13 @@ export function POST(request: Request) {
   return catchAsyncError(() => {
     return handleRoute(request, async (req: CustomRequest<Body>) => {
       // validate the auth
-      const value = validateHeader(req.headers);
+      const value = validateHeader(req.headers)!!;
 
       const credential = await prisma.credential.findFirst({
         where: { username: value.username },
       });
 
-      if (!credential) throw new Error("Something went wrong!");
+      if (!credential) throw new CustomError("Something went wrong!", 500);
 
       // check the password
       const isPasswordCorrect = await comparePassword(
@@ -35,7 +36,7 @@ export function POST(request: Request) {
         credential.hash_password
       );
 
-      if (!isPasswordCorrect) throw new Error("Invalid password");
+      if (!isPasswordCorrect) throw new CustomError("Invalid password", 400);
 
       let hash = await hashPassword(req.body.newPassword);
       await prisma.credential.update({

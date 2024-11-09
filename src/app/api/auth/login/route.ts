@@ -2,14 +2,15 @@
 import {
   catchAsyncError,
   comparePassword,
+  CustomError,
   CustomRequest,
   generateToken,
   handleRoute,
   hashPassword,
   makeResponse,
-} from "../utils";
+} from "../../utils";
 
-import prisma from "../../../../lib/prisma";
+import prisma from "../../../../../lib/prisma";
 
 interface Body {
   username: string;
@@ -19,7 +20,6 @@ interface Body {
 export function POST(request: Request) {
   return catchAsyncError(() => {
     return handleRoute(request, async (req: CustomRequest<Body>) => {
-
       // temp create credential
       // let hash = await hashPassword(req.body.password)
       // await prisma.credential.create({
@@ -33,7 +33,8 @@ export function POST(request: Request) {
         where: { username: req.body.username },
       });
 
-      if (!credential) throw new Error("Invalid username or password");
+      if (!credential)
+        throw new CustomError("Invalid username or password", 400);
 
       // check the password
       const isPasswordCorrect = await comparePassword(
@@ -41,7 +42,8 @@ export function POST(request: Request) {
         credential.hash_password
       );
 
-      if (!isPasswordCorrect) throw new Error("Invalid username or password");
+      if (!isPasswordCorrect)
+        throw new CustomError("Invalid username or password", 400);
 
       // generate a token
       let token = generateToken(req.body.username);
