@@ -1,8 +1,8 @@
 import { BorrowRecord, Customer, PayRecord } from "@/store/app";
 import type { AxiosResult } from "../DataType";
-import AxiosInstance from "../axios";
+import AxiosApiInstance from "../axios";
 
-namespace ApiAll {
+namespace Api {
   const header = {
     headers: {
       "Content-Type": "application/json",
@@ -14,7 +14,7 @@ namespace ApiAll {
       username,
       password,
     };
-    return (await AxiosInstance.post(
+    return (await AxiosApiInstance.post(
       "/api/auth/login",
       data,
       header
@@ -22,7 +22,7 @@ namespace ApiAll {
   }
 
   export async function getAllCustomer() {
-    return (await AxiosInstance.get(
+    return (await AxiosApiInstance.get(
       "/api/customer/all",
       header
     )) as AxiosResult<Customer>;
@@ -37,7 +37,7 @@ namespace ApiAll {
   export async function createCustomer(
     customer: CreateCustomer
   ) {
-    return await AxiosInstance.post("/api/customer/create", customer) as AxiosResult<Customer>;
+    return await AxiosApiInstance.post("/api/customer/create", customer) as AxiosResult<Customer>;
   }
 
   //borrow
@@ -49,7 +49,7 @@ namespace ApiAll {
   export async function createBorrow(
     borrow: CreateBorrowRecord
   ) {
-    return await AxiosInstance.post("/api/customer/borrow/create", borrow) as AxiosResult<BorrowRecord>;
+    return await AxiosApiInstance.post("/api/customer/borrow/create", borrow) as AxiosResult<BorrowRecord>;
   }
 
   //create record
@@ -62,7 +62,7 @@ namespace ApiAll {
   export async function createPayRecord(
     value: CreatePayRecord
   ) {
-    return await AxiosInstance.post("/api/customer/borrow/pay-record/create", value) as AxiosResult<PayRecord>;
+    return await AxiosApiInstance.post("/api/customer/borrow/pay-record/create", value) as AxiosResult<PayRecord>;
   }
 
 
@@ -70,4 +70,4 @@ namespace ApiAll {
 
 }
 
-export default ApiAll;
+export default Api;

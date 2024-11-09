@@ -1,5 +1,5 @@
 "use client";
-import ApiAll from "@/lib/api/ApiAll";
+import Api from "@/lib/api/Api";
 import { AxiosResult } from "@/lib/DataType";
 import { useState, useCallback } from "react";
 
@@ -56,7 +56,7 @@ export function useApi<D, Args = any>(
     statusCode: number;
   };
   if (result) {
-    const { data, error, isOk } = result;
+    const { data, errorMessage: error, isOk } = result;
     out.data = data || undefined;
     if (!isOk) out.status = "error";
     out.error = error?.message;
@@ -64,7 +64,7 @@ export function useApi<D, Args = any>(
   }
   return out;
 }
-const a = useApi(ApiAll.createCustomer);
+const a = useApi(Api.createCustomer);
 
 export async function sleep(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));

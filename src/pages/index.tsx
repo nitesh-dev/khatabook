@@ -2,13 +2,13 @@ import ListItem from "@/components/home/ListItem";
 import styles from "../styles/home.module.scss";
 import { Heading, List, Button } from "@chakra-ui/react";
 import { useEffect } from "react";
-import ApiAll from "@/lib/api/ApiAll";
+import Api from "@/lib/api/Api";
 import AddCustomerDialog from "@/components/dialogs/AddCustomer";
 
 export default function Home() {
   useEffect(() => {
     (async () => {
-      const data = await ApiAll.getAllCustomer();
+      const data = await Api.getAllCustomer();
       console.log(data);
     })();
   }, []);

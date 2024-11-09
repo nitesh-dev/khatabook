@@ -1,7 +1,7 @@
 import axios from "axios";
 import type { AxiosResult } from "../DataType";
 
-const AxiosInstance = axios.create({
+const AxiosApiInstance = axios.create({
   //@ts-ignore
   // baseURL: import.meta.env.VITE_SERVER_URL,
   baseURL: "http://localhost:3000",
@@ -13,7 +13,7 @@ function getBearerToken() {
 }
 
 // Adding token to every request
-AxiosInstance.interceptors.request.use(
+AxiosApiInstance.interceptors.request.use(
   async function (config) {
     // await delay(2000) // temp for testing purpose
 
@@ -30,62 +30,40 @@ AxiosInstance.interceptors.request.use(
 
 // error handling to every request
 
-AxiosInstance.interceptors.response.use(
+AxiosApiInstance.interceptors.response.use(
   (response) => {
+    console.log({ response })
     // Return the response data on success
     const res: AxiosResult<any> = {
       isOk: true,
-      data: response.data,
-      error: null,
+      data: response.data.data,
+      statusCode: response.status
     };
     return res as any;
   },
   (error) => {
-    // console.log(error);
-
     let res: AxiosResult<any> = {
       isOk: false,
       data: null,
-      error: null,
+      statusCode: 500
     };
 
     if (error.response) {
       // The request was made, and the server responded with an error status
-
-      console.log(error.response);
-
-      const errorResponse = {
-        message: error.message,
-        error: error.response.data.message || "Unknown Error",
-        statusCode: error.response.status,
-      };
-
-      res.error = errorResponse;
+      res.errorMessage = error.response.errorMessage
+      res.statusCode = error.response.status
     } else if (error.request) {
       // The request was made, but no response was received from the server
-      const errorMessage = "No response received from the server";
-
-      const errorResponse = {
-        message: errorMessage,
-        error: "Request Timeout",
-        statusCode: 408, // Example status code for request timeout
-      };
-
-      res.error = errorResponse;
+      res.errorMessage = "No response received from the server";;
+      res.statusCode = 408
     } else {
       // Something else happened while setting up the request that triggered an error
-
-      const errorResponse = {
-        message: error.message,
-        error: "Internal server error",
-        statusCode: 500,
-      };
-
-      res.error = errorResponse;
+      res.errorMessage = "Internal server error";;
+      res.statusCode = 500
     }
 
     return res;
   }
 );
 
-export default AxiosInstance;
+export default AxiosApiInstance;

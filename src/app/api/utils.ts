@@ -1,6 +1,7 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
+import { Prisma } from "@prisma/client";
 dotenv.config();
 
 let SECRET_KEY = process.env.SECRET_KEY || "secret";
@@ -87,6 +88,9 @@ export async function catchAsyncError(
     let code = 500
     if (e instanceof CustomError) {
       code = e.code
+    }
+    if (e instanceof Prisma.PrismaClientKnownRequestError) {
+
     }
     console.log(e)
     return makeResponse({ errorMessage: e.message }, code);

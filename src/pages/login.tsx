@@ -1,13 +1,13 @@
 import styles from "../styles/login.module.scss";
 import { Avatar } from "@/components/ui/avatar";
-import ApiAll from "@/lib/api/ApiAll";
+import Api from "@/lib/api/Api";
 import { Input, Button, Heading } from "@chakra-ui/react";
 import { FormEvent, useState } from "react";
 import { Toaster, toaster } from "@/components/ui/toaster";
-import { useRouter } from 'next/navigation'
+import { useRouter } from "next/navigation";
 
 export default function Login() {
-  const router = useRouter()
+  const router = useRouter();
 
   const [form, setForm] = useState<{ username: string; password: string }>({
     username: "",
@@ -24,7 +24,10 @@ export default function Login() {
 
   async function onSubmit(e: FormEvent) {
     e.preventDefault();
-    const res = await ApiAll.login<{token: string}>(form.username, form.password);
+    const res = await Api.login<{ token: string }>(
+      form.username,
+      form.password
+    );
 
     if (res.data) {
       toaster.create({
@@ -32,12 +35,12 @@ export default function Login() {
         type: "success",
       });
 
-      localStorage.setItem("access_token", res.data.token)
+      localStorage.setItem("access_token", res.data.token);
 
-      router.replace('/')
+      router.replace("/");
     } else {
       toaster.create({
-        description: res.error?.error,
+        description: res.errorMessage?.error,
         type: "error",
       });
     }

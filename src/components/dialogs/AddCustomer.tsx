@@ -17,7 +17,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, Controller } from "react-hook-form";
 import { usePromise } from "@/pages/utils";
-import ApiAll from "@/lib/api/ApiAll";
+import Api from "@/lib/api/Api";
 import { toaster } from "../ui/toaster";
 
 const formSchema = z
@@ -35,7 +35,7 @@ export default function AddCustomerDialog() {
     resolver: zodResolver(formSchema),
     defaultValues: {},
   });
-  const { status, mutate, error, data } = usePromise(ApiAll.createCustomer);
+  const { status, mutate, error, data } = usePromise(Api.createCustomer);
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
