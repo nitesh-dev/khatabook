@@ -10,8 +10,31 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { Fieldset, Input, Stack, Textarea } from "@chakra-ui/react";
+import { Field } from "@/components/ui/field";
+import { FormEvent } from "react";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm, Controller } from "react-hook-form";
+
+const formSchema = z
+  .object({
+    name: z.string().min(3).max(50),
+    email: z.string().email(),
+    phone: z.string().length(10),
+    address: z.string().min(2),
+  })
+  .required();
 
 export default function AddCustomerDialog() {
+  const { control, handleSubmit } = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {},
+  });
+
+  function onSubmit(values: z.infer<typeof formSchema>) {
+    console.log(values);
+  }
   return (
     <DialogRoot role="alertdialog">
       <DialogTrigger asChild>
@@ -19,22 +42,111 @@ export default function AddCustomerDialog() {
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Dialog Title</DialogTitle>
+          <DialogTitle>Add Customer</DialogTitle>
         </DialogHeader>
         <DialogBody>
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua.
-          </p>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <Controller
+              name="name"
+              control={control}
+              render={({ field, fieldState: { error } }) => (
+                <Field
+                  label="Name"
+                  errorText={error?.message}
+                  invalid={error != undefined}
+                >
+                  <Input {...field} />
+                </Field>
+              )}
+            />
+            <Controller
+              name="email"
+              control={control}
+              render={({ field, fieldState: { error } }) => (
+                <Field
+                  label="Email"
+                  errorText={error?.message}
+                  invalid={error != undefined}
+                >
+                  <Input {...field} />
+                </Field>
+              )}
+            />
+            <Controller
+              name="phone"
+              control={control}
+              render={({ field, fieldState: { error } }) => (
+                <Field
+                  label="Phone"
+                  errorText={error?.message}
+                  invalid={error != undefined}
+                >
+                  <Input {...field} />
+                </Field>
+              )}
+            />
+            <Controller
+              name="address"
+              control={control}
+              render={({ field, fieldState: { error } }) => (
+                <Field
+                  label="Address"
+                  errorText={error?.message}
+                  invalid={error != undefined}
+                >
+                  <Input {...field} />
+                </Field>
+              )}
+            />
+            <Button type="submit" alignSelf="flex-start">
+              Submit
+            </Button>
+          </form>
         </DialogBody>
-        <DialogFooter>
-          <DialogActionTrigger asChild>
-            <Button variant="outline">Cancel</Button>
-          </DialogActionTrigger>
-          <Button>Save</Button>
-        </DialogFooter>
+
         <DialogCloseTrigger />
       </DialogContent>
     </DialogRoot>
   );
 }
+
+/**
+ 
+   <Fieldset.Root onSubmit={handleSubmit(onSubmit)} size="lg" maxW="md">
+          <DialogHeader>
+            <DialogTitle>Add Customer</DialogTitle>
+          </DialogHeader>
+          <DialogBody>
+            <Fieldset.Content>
+              <Field label="Name">
+                <Input {...register("name")} />
+              </Field>
+
+              <Field label="Email address">
+                <Input {...register("email")} type="email" />
+              </Field>
+              <Field label="Phone">
+                <Input {...register("phone")} type="text" />
+              </Field>
+              <Field label="Address">
+                <Input {...register("address")} name="address" />
+              </Field>
+            </Fieldset.Content>
+            <Button type="submit" alignSelf="flex-start">
+              Submit
+            </Button>
+          </DialogBody>
+          <DialogFooter>
+            <DialogActionTrigger asChild>
+              <Button variant="outline">Cancel</Button>
+            </DialogActionTrigger>
+            <Button type="submit" alignSelf="flex-start">
+              Submit
+            </Button>
+          </DialogFooter>
+          <DialogCloseTrigger />
+        </Fieldset.Root>
+
+ * 
+ * 
+ */
