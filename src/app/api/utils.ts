@@ -89,7 +89,7 @@ export async function catchAsyncError(
       code = e.code
     }
     console.log(e)
-    return makeResponse({ message: e.message }, code);
+    return makeResponse({ errorMessage: e.message }, code);
   }
 }
 

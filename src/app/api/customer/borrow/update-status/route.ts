@@ -30,7 +30,7 @@ export function PATCH(request: Request) {
         throw new CustomError(
           "Invalid status type it must be one of the following: " +
           Object.values(RecordStatus),
-          500
+          400
         );
 
       const record = await prisma.borrow_record.update({
@@ -38,7 +38,7 @@ export function PATCH(request: Request) {
         data: { status: req.body.status },
       });
 
-      return makeResponse({ record }, 200);
+      return makeResponse({ data: record }, 200);
     });
   });
 }

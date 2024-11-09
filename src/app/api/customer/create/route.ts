@@ -29,7 +29,7 @@ export function POST(request: Request) {
         data: req.body,
       });
 
-      return makeResponse({ customer }, 200);
+      return makeResponse({ data: customer }, 200);
     });
   });
 }

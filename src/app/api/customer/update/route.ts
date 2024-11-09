@@ -22,7 +22,6 @@ export function PATCH(request: Request) {
     return handleRoute(request, async (req: CustomRequest<Body>) => {
       // validate the auth
       validateHeader(req.headers);
-      console.log("--", req.body)
       let id = req.body.id;
       let value = req.body;
       delete value.id;
@@ -34,7 +33,7 @@ export function PATCH(request: Request) {
         data: value,
       });
 
-      return makeResponse({ customer }, 200);
+      return makeResponse({ data: customer }, 200);
     });
   });
 }

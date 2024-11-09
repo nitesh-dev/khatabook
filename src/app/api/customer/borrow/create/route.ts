@@ -38,7 +38,7 @@ export function POST(request: Request) {
         },
       });
 
-      return makeResponse({ record }, 200);
+      return makeResponse({ data: record }, 200);
     });
   });
 }
