@@ -26,6 +26,18 @@ namespace ApiAll {
       header
     )) as any as AxiosResult<T>;
   }
+  type CreateCustomer = {
+    name: string;
+    email: string;
+    phone: string;
+    address: string;
+  }
+
+  export async function createCustomer<T>(
+    customer: CreateCustomer
+  ) {
+    return await AxiosInstance.post("/api/customer/create", customer) as any as AxiosResult<T>;
+  }
 }
 
 export default ApiAll;

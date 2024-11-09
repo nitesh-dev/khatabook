@@ -12,10 +12,13 @@ import {
 } from "@/components/ui/dialog";
 import { Fieldset, Input, Stack, Textarea } from "@chakra-ui/react";
 import { Field } from "@/components/ui/field";
-import { FormEvent } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, Controller } from "react-hook-form";
+import { usePromise } from "@/pages/utils";
+import ApiAll from "@/lib/api/ApiAll";
+import { toaster } from "../ui/toaster";
 
 const formSchema = z
   .object({
@@ -27,18 +30,31 @@ const formSchema = z
   .required();
 
 export default function AddCustomerDialog() {
+  const [isOpen, setIsOpen] = useState(false);
   const { control, handleSubmit } = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {},
   });
+  const { status, mutate, error } = usePromise(ApiAll.createCustomer<any>);
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
+    mutate(values);
   }
+  useEffect(() => {
+    if (status == "success") {
+      setIsOpen(false);
+      toaster.success({ title: "Added user" });
+    } else if (status == "error") {
+      toaster.error({ title: error });
+    }
+  }, [status]);
   return (
-    <DialogRoot role="alertdialog">
+    <DialogRoot open={isOpen} role="alertdialog">
       <DialogTrigger asChild>
-        <Button size="sm">Add Customer</Button>
+        <Button onClick={() => setIsOpen(true)} size="sm">
+          Add Customer
+        </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
@@ -98,13 +114,20 @@ export default function AddCustomerDialog() {
                 </Field>
               )}
             />
-            <Button type="submit" alignSelf="flex-start">
+            <Button
+              type="submit"
+              alignSelf="flex-start"
+              loading={status == "loading"}
+              loadingText="Creating..."
+            >
               Submit
             </Button>
           </form>
         </DialogBody>
 
-        <DialogCloseTrigger />
+        {status != "loading" && (
+          <DialogCloseTrigger onClick={() => setIsOpen(false)} />
+        )}
       </DialogContent>
     </DialogRoot>
   );
