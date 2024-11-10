@@ -58,7 +58,7 @@ export default function CustomerProfile() {
     <div className={styles.screen}>
       <div className={styles.header}>
         <div className={styles.title_bar}>
-          <IconButton background={"transparent"}>
+          <IconButton background={"transparent"} onClick={() => router.back()}>
             <LuArrowLeft />
           </IconButton>
           <div>

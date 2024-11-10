@@ -9,12 +9,16 @@ import { useShallowAppStore } from "@/store/app";
 import { toaster } from "@/components/ui/toaster";
 
 export default function Home() {
-  const { customers, setCustomers } = useShallowAppStore((s) => ({
-    customers: s.customers,
-    setCustomers: s.setCustomers,
-  }));
-  const { status, error } = useApi(Api.getAllCustomer, {
-    saveData: (data) => setCustomers(data),
+  // const { customers, setCustomers } = useShallowAppStore((s) => ({
+  //   customers: s.customers,
+  //   setCustomers: s.setCustomers,
+  // }));
+  const {
+    status,
+    error,
+    data: customers = [],
+    mutate,
+  } = useApi(Api.getAllCustomer, {
     initial: true,
   });
   useEffect(() => {
@@ -42,7 +46,11 @@ export default function Home() {
       <div className={styles.content}>
         <div className={styles.title}>
           <Heading as="h2">Customers</Heading>
-          <AddCustomerDialog />
+          <AddCustomerDialog
+            onRefetch={() => {
+              mutate(undefined);
+            }}
+          />
         </div>
         <br />
         {status == "loading" ? (

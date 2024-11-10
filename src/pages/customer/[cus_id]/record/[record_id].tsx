@@ -46,7 +46,7 @@ export default function CustomerBorrowRecord() {
     <div className={styles.screen}>
       <div className={styles.header}>
         <div className={styles.title_bar}>
-          <IconButton background={"transparent"}>
+          <IconButton onClick={() => router.back()} background={"transparent"}>
             <LuArrowLeft />
           </IconButton>
           <div>
@@ -72,8 +72,8 @@ export default function CustomerBorrowRecord() {
 
       <div className={styles.content}>
         <div className={styles.title}>
-          <Heading as="h2">Entries</Heading>
-          <Button>Add Entry</Button>
+          <Heading as="h2">Pay records</Heading>
+          <Button>Add pay record</Button>
         </div>
         <br />
         <List.Root>

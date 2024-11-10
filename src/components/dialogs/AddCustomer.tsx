@@ -30,18 +30,21 @@ const formSchema = z
   })
   .required();
 
-export default function AddCustomerDialog() {
+type AddCustomerDialogProps = {
+  onRefetch?: () => void;
+};
+export default function AddCustomerDialog({
+  onRefetch,
+}: AddCustomerDialogProps) {
   const [isOpen, setIsOpen] = useState(false);
   const { control, handleSubmit } = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {},
   });
-  const { addCustomer } = useShallowAppStore((s) => ({
-    addCustomer: s.addCustomer,
-  }));
-  const { status, error, mutate } = useApi(Api.createCustomer, {
-    saveData: (data) => addCustomer(data),
-  });
+  // const { addCustomer } = useShallowAppStore((s) => ({
+  //   addCustomer: s.addCustomer,
+  // }));
+  const { status, error, mutate } = useApi(Api.createCustomer);
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
@@ -49,6 +52,7 @@ export default function AddCustomerDialog() {
   }
   useEffect(() => {
     if (status == "success") {
+      onRefetch?.();
       setIsOpen(false);
       toaster.success({ title: "Added user" });
     } else if (status == "error") {
