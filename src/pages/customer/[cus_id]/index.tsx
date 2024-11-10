@@ -1,12 +1,55 @@
-import { Heading, List, Button, Tabs } from "@chakra-ui/react";
+import {
+  Heading,
+  List,
+  Button,
+  Tabs,
+  HStack,
+  VStack,
+  Spinner,
+} from "@chakra-ui/react";
 import styles from "@/styles/customer/profile.module.scss";
 import { IconButton } from "@chakra-ui/react";
 import { ArrowBackIcon } from "@chakra-ui/icons";
 import { LuArrowLeft } from "react-icons/lu";
 import { Avatar } from "@/components/ui/avatar";
 import ListItem from "@/components/profile/ListItem";
+import { useRouter } from "next/router";
+import { toaster } from "@/components/ui/toaster";
+import Api from "@/lib/api/Api";
+import { useApi } from "@/pages/utils";
+import { useShallowAppStore } from "@/store/app";
+import { useEffect } from "react";
 
 export default function CustomerProfile() {
+  const router = useRouter();
+  const { cus_id } = router.query as any;
+  console.log(cus_id);
+  //find the customer if exist or load from database
+  const { customer, setCustomers } = useShallowAppStore((s) => ({
+    setCustomers: s.setCustomers,
+    customer: s.customers.find((c) => c.id == cus_id),
+  }));
+  const { status, error } = useApi(Api.getAllCustomer, {
+    saveData: (data) => setCustomers(data),
+    initial: true,
+  });
+
+  useEffect(() => {
+    if (status == "error") {
+      toaster.error({ title: error });
+    }
+  }, [status]);
+
+  if (status == "loading") {
+    return (
+      <VStack>
+        <Spinner />
+      </VStack>
+    );
+  }
+  if (!customer) {
+    return <VStack>Customer not found</VStack>;
+  }
   return (
     <div className={styles.screen}>
       <div className={styles.header}>
@@ -15,9 +58,9 @@ export default function CustomerProfile() {
             <LuArrowLeft />
           </IconButton>
           <div>
-            <Avatar size="md" name="Nitesh Kumar" />
+            <Avatar size="md" name={customer.name} />
             <Heading color={"white"} as="h3">
-              Nitesh Kumar <span style={{ opacity: 0.7 }}>(cus)</span>
+              {customer.name} <span style={{ opacity: 0.7 }}>(cus)</span>
             </Heading>
           </div>
         </div>
@@ -48,10 +91,10 @@ export default function CustomerProfile() {
           </Tabs.List>
           <Tabs.Content value="active">
             <List.Root>
-                <ListItem/>
-                <ListItem/>
-                <ListItem/>
-                <ListItem/>
+              <ListItem />
+              <ListItem />
+              <ListItem />
+              <ListItem />
             </List.Root>
           </Tabs.Content>
           <Tabs.Content value="completed">Manage your projects</Tabs.Content>

@@ -31,6 +31,13 @@ export function PATCH(request: Request) {
           id: id
         },
         data: value,
+        include: {
+          records: {
+            include: {
+              pay_records: true
+            },
+          }
+        },
       });
 
       return makeResponse({ data: customer }, 200);

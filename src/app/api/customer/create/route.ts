@@ -27,6 +27,13 @@ export function POST(request: Request) {
 
       const customer = await prisma.customer.create({
         data: req.body,
+        include: {
+          records: {
+            include: {
+              pay_records: true
+            },
+          }
+        },
       });
 
       return makeResponse({ data: customer }, 200);

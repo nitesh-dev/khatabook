@@ -36,8 +36,7 @@ export default function AddCustomerDialog() {
     resolver: zodResolver(formSchema),
     defaultValues: {},
   });
-  const { customers, addCustomer } = useShallowAppStore((s) => ({
-    customers: s.customers,
+  const { addCustomer } = useShallowAppStore((s) => ({
     addCustomer: s.addCustomer,
   }));
   const { status, error, mutate } = useApi(Api.createCustomer, {

@@ -55,6 +55,7 @@ export default function Home() {
                 borrowed={1000}
                 lastTime={c.updated_at.toString()}
                 key={c.id}
+                id={c.id}
               />
             ))}
           </List.Root>

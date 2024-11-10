@@ -28,12 +28,16 @@ export function GET(request: Request) {
       const customers = await prisma.customer.findMany({
         include: {
           records: {
-            where: {
-              status: "PENDING",
+            include: {
+              pay_records: true
             },
-          },
+            where: {
+              status: "PENDING"
+            }
+          }
         },
       });
+
       return makeResponse({ data: customers }, 200);
     });
   });

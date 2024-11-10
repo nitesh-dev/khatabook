@@ -49,7 +49,7 @@ export function useApi<D, Args = any>(
 ) {
   const [statusCode, setStatusCode] = useState<number>();
   const [error, setError] = useState<string>();
-  const [status, setStatus] = useState<Status>("initial");
+  const [status, setStatus] = useState<Status>(initial ? "loading" : "initial");
   const mutate = useCallback((args: Args) => {
     //clear
     setError(undefined);
@@ -78,6 +78,12 @@ export function useApi<D, Args = any>(
   }, [initial]);
 
   return { error, status, mutate, statusCode };
+}
+
+export function useLoadDataHook() {
+  const [status, setStatus] = useState<Status>("initial");
+  const [error, setError] = useState<string>();
+  useEffect(() => {}, []);
 }
 
 // export function useApi<D, Args = any>(
