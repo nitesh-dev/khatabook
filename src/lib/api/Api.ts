@@ -27,6 +27,12 @@ namespace Api {
       header
     )) as AxiosResult<Customer[]>;
   }
+  export async function getCustomerById(id: number) {
+    return (await AxiosApiInstance.get(
+      "/api/customer/id?id=" + id,
+      header
+    )) as AxiosResult<Customer>;
+  }
   type CreateCustomer = {
     name: string;
     email: string;

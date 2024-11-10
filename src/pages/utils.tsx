@@ -40,13 +40,15 @@ export function usePromise<D, E = string, Args = any>(
 export type PromiseConfig2<D> = {
   initial?: boolean;
   saveData?: (data: D) => void;
+  args?: any;
 };
 export function useApi<D, Args = any>(
   promise: (args: Args) => Promise<AxiosResult<D>>,
-  { initial, saveData }: PromiseConfig2<D> = {
+  { initial, saveData, args }: PromiseConfig2<D> = {
     initial: false,
   }
 ) {
+  const [data, setData] = useState<D>();
   const [statusCode, setStatusCode] = useState<number>();
   const [error, setError] = useState<string>();
   const [status, setStatus] = useState<Status>(initial ? "loading" : "initial");
@@ -56,13 +58,15 @@ export function useApi<D, Args = any>(
     setStatus("loading");
     promise(args)
       .then((result) => {
+        console.log({ result });
         setStatusCode(result.statusCode);
         if (result.isOk) {
           saveData?.(result.data!);
+          setData(result.data);
           setStatus("success");
         } else {
-          setStatus("error");
           setError(result.errorMessage);
+          setStatus("error");
         }
       })
       .catch((error) => {
@@ -73,11 +77,11 @@ export function useApi<D, Args = any>(
 
   useEffect(() => {
     if (initial) {
-      mutate(undefined as any);
+      mutate(args as any);
     }
-  }, [initial]);
+  }, [initial, args]);
 
-  return { error, status, mutate, statusCode };
+  return { error, status, mutate, statusCode, data };
 }
 
 export function useLoadDataHook() {

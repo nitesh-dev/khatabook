@@ -12,7 +12,7 @@ import { IconButton } from "@chakra-ui/react";
 import { ArrowBackIcon } from "@chakra-ui/icons";
 import { LuArrowLeft } from "react-icons/lu";
 import { Avatar } from "@/components/ui/avatar";
-import ListItem from "@/components/profile/ListItem";
+import BorrowRecordItem from "@/components/profile/BorrowRecordItem";
 import { useRouter } from "next/router";
 import { toaster } from "@/components/ui/toaster";
 import Api from "@/lib/api/Api";
@@ -23,16 +23,13 @@ import { useEffect } from "react";
 export default function CustomerProfile() {
   const router = useRouter();
   const { cus_id } = router.query as any;
-  console.log(cus_id);
+
   //find the customer if exist or load from database
-  const { customer, setCustomers } = useShallowAppStore((s) => ({
-    setCustomers: s.setCustomers,
-    customer: s.customers.find((c) => c.id == cus_id),
-  }));
-  const { status, error } = useApi(Api.getAllCustomer, {
-    saveData: (data) => setCustomers(data),
-    initial: true,
-  });
+  // const { customer, setCustomers } = useShallowAppStore((s) => ({
+  //   setCustomers: s.setCustomers,
+  //   customer: s.customers.find((c) => c.id == cus_id),
+  // }));
+  const { status, error, mutate, data: customer } = useApi(Api.getCustomerById);
 
   useEffect(() => {
     if (status == "error") {
@@ -40,13 +37,20 @@ export default function CustomerProfile() {
     }
   }, [status]);
 
-  if (status == "loading") {
+  useEffect(() => {
+    if (cus_id != null) {
+      mutate(cus_id);
+    }
+  }, [cus_id]);
+
+  if (status == "loading" || status == "initial") {
     return (
       <VStack>
         <Spinner />
       </VStack>
     );
   }
+
   if (!customer) {
     return <VStack>Customer not found</VStack>;
   }
@@ -80,7 +84,7 @@ export default function CustomerProfile() {
 
       <div className={styles.content}>
         <div className={styles.title}>
-          <Heading as="h2">Records</Heading>
+          <Heading as="h2">Borrow Records</Heading>
           <Button>Add Record</Button>
         </div>
         <br />
@@ -91,10 +95,20 @@ export default function CustomerProfile() {
           </Tabs.List>
           <Tabs.Content value="active">
             <List.Root>
-              <ListItem />
-              <ListItem />
-              <ListItem />
-              <ListItem />
+              {customer.records
+                .filter((r) => r.status != "COMPLETED")
+                .map((r) => (
+                  <BorrowRecordItem
+                    borrowId={r.id}
+                    cusId={cus_id}
+                    amount={r.amount}
+                    due={r.rem_amount}
+                    date={r.created_at.toString()}
+                    note={r.notes}
+                    paid={0}
+                    key={r.id}
+                  />
+                ))}
             </List.Root>
           </Tabs.Content>
           <Tabs.Content value="completed">Manage your projects</Tabs.Content>

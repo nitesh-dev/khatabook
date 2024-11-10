@@ -1,28 +1,40 @@
 import styles from "@/styles/customer/recordItem.module.scss";
 import { Heading, List } from "@chakra-ui/react";
-export default function RecordItem() {
+type PayRecordItemProps = {
+  pay_record_id: string;
+  borrow_record_id: string;
+  createdAt: string;
+  note: string;
+  amount: number;
+};
+export default function PayRecordItem({
+  pay_record_id,
+  borrow_record_id,
+  createdAt,
+  note,
+  amount,
+}: PayRecordItemProps) {
   return (
     <List.Item>
       <div className={styles.list_item}>
         <div className={styles.content}>
-          <span>12 jan 2022</span>
-  
-          <p>I have given the money for the some task</p>
-          
+          <span>{createdAt}</span>
+
+          <p>{note}</p>
         </div>
         <div className={styles.footer}>
           <div>
             <span>Amt</span>
-            <span>₹100</span>
+            <span>{amount}</span>
           </div>
-          <div>
+          {/* <div>
             <span>Paid</span>
             <span>₹100</span>
           </div>
           <div>
             <span>Due</span>
             <span>₹100</span>
-          </div>
+          </div> */}
         </div>
       </div>
     </List.Item>

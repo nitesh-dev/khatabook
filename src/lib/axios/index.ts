@@ -42,15 +42,15 @@ AxiosApiInstance.interceptors.response.use(
     return res as any;
   },
   (error) => {
+    console.log({ error })
     let res: AxiosResult<any> = {
       isOk: false,
-      data: null,
       statusCode: 500
     };
 
     if (error.response) {
       // The request was made, and the server responded with an error status
-      res.errorMessage = error.response.errorMessage
+      res.errorMessage = error.response.data.errorMessage
       res.statusCode = error.response.status
     } else if (error.request) {
       // The request was made, but no response was received from the server

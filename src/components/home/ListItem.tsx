@@ -30,9 +30,9 @@ export default function ListItem({
             <span className="label">{lastTime}</span>
           </div>
         </div>
-        <div className={styles.right}>
+        {/* <div className={styles.right}>
           <Heading as="h3">₹{borrowed}</Heading>
-        </div>
+        </div> */}
       </div>
     </List.Item>
   );

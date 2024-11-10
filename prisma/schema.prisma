@@ -12,6 +12,7 @@ model borrow_record {
   id          Int          @id @default(autoincrement())
   customer_id Int
   amount      Float
+  notes       String       @default("nothing")
   rem_amount  Float
   borrow_date DateTime
   status      RecordStatus @default(PENDING)

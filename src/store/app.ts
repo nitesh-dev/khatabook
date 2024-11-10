@@ -4,7 +4,7 @@ import { useShallow } from "zustand/react/shallow";
 
 import type { customer, pay_record, borrow_record } from '@prisma/client'
 export type Customer = {
-  records: PayRecord[]
+  records: BorrowRecord[]
 } & customer
 export type BorrowRecord = {
   pay_records: PayRecord[]
