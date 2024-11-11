@@ -25,7 +25,7 @@ export default function BorrowRecordItem({
   return (
     <List.Item
       onClick={() => {
-        router.push("/customer/" + cusId + "/record/" + borrowId);
+        router.push("/customer/" + cusId + "/pay-record/" + borrowId);
       }}
     >
       <div className={styles.list_item}>
