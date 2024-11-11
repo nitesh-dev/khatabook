@@ -18,7 +18,7 @@ import { toaster } from "@/components/ui/toaster";
 import Api from "@/lib/api/Api";
 import { useApi } from "@/lib/utils";
 import { useShallowAppStore } from "@/store/app";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import AddBorrowRecord from "@/components/dialogs/AddBorrowRecord";
 
 export default function CustomerProfile() {
@@ -45,6 +45,23 @@ export default function CustomerProfile() {
     }
   }, [cusId]);
 
+  //TODO add case like borrowStatus==completed
+  const totalBorrowed = useMemo(() => {
+    if (!customer) return 0;
+    return customer.records.reduce((sum, r) => {
+      return sum + r.amount;
+    }, 0);
+  }, [customer]);
+
+  const totalPaid = useMemo(() => {
+    if (!customer) return 0;
+    return customer.records.reduce((sum, r) => {
+      return r.pay_records.reduce((sum, p) => {
+        return sum + p.amount;
+      }, sum);
+    }, 0);
+  }, [customer]);
+
   if (status == "loading" || status == "initial") {
     return (
       <VStack>
@@ -56,6 +73,7 @@ export default function CustomerProfile() {
   if (!customer || !cusId) {
     return <VStack>Customer not found</VStack>;
   }
+
   return (
     <div className={styles.screen}>
       <div className={styles.header}>
@@ -71,17 +89,21 @@ export default function CustomerProfile() {
           </div>
         </div>
 
-        {/* <div className={styles.history_card}>
+        <div className={styles.history_card}>
           <div>
-            <p>You will give</p>
-            <span className={styles.success}>₹100</span>
+            <span className={styles.success}>₹{totalBorrowed}</span>
+            <p>Total Borrowed</p>
           </div>
 
           <div>
-            <span className={styles.danger}>₹100</span>
-            <p>You will get</p>
+            <span className={styles.danger}>₹{totalBorrowed - totalPaid}</span>
+            <p>Remaining Balance</p>
           </div>
-        </div> */}
+          <div>
+            <span className={styles.danger}>₹{totalPaid}</span>
+            <p>Total Paid</p>
+          </div>
+        </div>
       </div>
 
       <div className={styles.content}>
@@ -115,7 +137,7 @@ export default function CustomerProfile() {
                     due={r.rem_amount}
                     date={r.created_at.toString()}
                     note={r.notes}
-                    paid={0}
+                    paid={r.amount - r.rem_amount}
                     key={r.id}
                   />
                 ))}

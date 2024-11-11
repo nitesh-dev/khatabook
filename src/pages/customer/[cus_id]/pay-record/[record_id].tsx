@@ -1,5 +1,5 @@
 import { Heading, List, Button, Tabs, VStack, Spinner } from "@chakra-ui/react";
-import styles from "@/styles/customer/profile.module.scss";
+import styles from "@/styles/customer/payrecord.module.scss";
 import { IconButton } from "@chakra-ui/react";
 import { ArrowBackIcon } from "@chakra-ui/icons";
 import { LuArrowLeft } from "react-icons/lu";
@@ -45,9 +45,12 @@ export default function CustomerBorrowRecord() {
   if (!borrowRecord || !cusId || !recordId) {
     return <VStack>Borrow record not found</VStack>;
   }
+  const totalPaid = borrowRecord.pay_records.reduce((sum, p) => {
+    return sum + p.amount;
+  }, 0);
 
   return (
-    <div className={styles.screen}>
+    <div className={styles.list_item}>
       <div className={styles.header}>
         <div className={styles.title_bar}>
           <IconButton onClick={() => router.back()} background={"transparent"}>
@@ -56,22 +59,29 @@ export default function CustomerBorrowRecord() {
           <div>
             <Avatar size="md" name="Nitesh Kumar" />
             <Heading color={"white"} as="h3">
-              Nitesh Kumar <span style={{ opacity: 0.7 }}>(cus)</span>
+              Nitesh Kumar{" "}
             </Heading>
           </div>
         </div>
+        <div className={styles.note}>{borrowRecord.notes}</div>
 
-        {/* <div className={styles.history_card}>
+        <div className={styles.history_card}>
           <div>
-            <p>You will give</p>
-            <span className={styles.success}>₹100</span>
+            <span className={styles.success}>₹{borrowRecord.amount}</span>
+            <p>Borrowed</p>
           </div>
 
           <div>
-            <span className={styles.danger}>₹100</span>
-            <p>You will get</p>
+            <span className={styles.danger}>
+              ₹{borrowRecord.amount - totalPaid}
+            </span>
+            <p>Remaining Balance</p>
           </div>
-        </div> */}
+          <div>
+            <span className={styles.danger}>₹{totalPaid}</span>
+            <p>Total Paid</p>
+          </div>
+        </div>
       </div>
 
       <div className={styles.content}>

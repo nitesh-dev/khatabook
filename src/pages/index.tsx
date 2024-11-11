@@ -1,7 +1,7 @@
 import CustomerItem from "@/components/home/CustomerItem";
 import styles from "../styles/home.module.scss";
 import { Heading, List, Button, Spinner } from "@chakra-ui/react";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import Api from "@/lib/api/Api";
 import AddCustomerDialog from "@/components/dialogs/AddCustomer";
 import { useApi } from "../lib/utils";
@@ -27,18 +27,41 @@ export default function Home() {
     }
   }, [status]);
 
+  //TODO add case like borrowStatus==completed
+  const totalBorrowed = useMemo(() => {
+    return customers.reduce((sum, c) => {
+      return c.records.reduce((sum, r) => {
+        return sum + r.amount;
+      }, sum);
+    }, 0);
+  }, [customers]);
+
+  const totalPaid = useMemo(() => {
+    return customers.reduce((sum, c) => {
+      return c.records.reduce((sum, r) => {
+        return r.pay_records.reduce((sum, p) => {
+          return sum + p.amount;
+        }, sum);
+      }, sum);
+    }, 0);
+  }, [customers]);
+
   return (
     <div className={styles.home}>
       <div className={styles.header}>
         <div className={styles.history_card}>
           <div>
-            <span className={styles.success}>₹100</span>
-            <p>You will give</p>
+            <span className={styles.success}>₹{totalBorrowed}</span>
+            <p>Total Borrowed</p>
           </div>
 
           <div>
-            <span className={styles.danger}>₹100</span>
-            <p>You will get</p>
+            <span className={styles.danger}>₹{totalBorrowed - totalPaid}</span>
+            <p>Remaining Balance</p>
+          </div>
+          <div>
+            <span className={styles.danger}>₹{totalPaid}</span>
+            <p>Total Paid</p>
           </div>
         </div>
       </div>
