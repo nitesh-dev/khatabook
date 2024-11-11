@@ -87,7 +87,8 @@ export default function CustomerProfile() {
           <div>
             <Avatar size="md" name={customer.name} />
             <Heading color={"white"} as="h3">
-              {customer.name} <span style={{ opacity: 0.7 }}>(cus)</span>
+              {customer.name}
+              {/* <span style={{ opacity: 0.7 }}>(cus)</span> */}
             </Heading>
           </div>
         </div>

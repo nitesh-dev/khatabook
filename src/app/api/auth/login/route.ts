@@ -48,7 +48,7 @@ export function POST(request: Request) {
       // generate a token
       let token = generateToken(req.body.username);
 
-      return makeResponse({ token }, 200);
+      return makeResponse({ data: token }, 200);
     });
   });
 }
