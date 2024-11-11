@@ -143,7 +143,24 @@ export default function CustomerProfile() {
                 ))}
             </List.Root>
           </Tabs.Content>
-          <Tabs.Content value="completed">Manage your projects</Tabs.Content>
+          <Tabs.Content value="completed">
+            <List.Root>
+              {customer.records
+                .filter((r) => r.status == "COMPLETED")
+                .map((r) => (
+                  <BorrowRecordItem
+                    borrowId={r.id}
+                    cusId={cusId}
+                    amount={r.amount}
+                    due={r.rem_amount}
+                    date={r.created_at.toString()}
+                    note={r.notes}
+                    paid={r.amount - r.rem_amount}
+                    key={r.id}
+                  />
+                ))}
+            </List.Root>
+          </Tabs.Content>
         </Tabs.Root>
       </div>
     </div>

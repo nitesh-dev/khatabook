@@ -45,9 +45,10 @@ export default function CustomerBorrowRecord() {
   if (!borrowRecord || !cusId || !recordId) {
     return <VStack>Borrow record not found</VStack>;
   }
-  const totalPaid = borrowRecord.pay_records.reduce((sum, p) => {
-    return sum + p.amount;
-  }, 0);
+  // const totalPaid = borrowRecord.pay_records.reduce((sum, p) => {
+  //   return sum + p.amount;
+  // }, 0);
+  const isCompleted = borrowRecord.status != "COMPLETED";
 
   return (
     <div className={styles.list_item}>
@@ -72,13 +73,13 @@ export default function CustomerBorrowRecord() {
           </div>
 
           <div>
-            <span className={styles.danger}>
-              ₹{borrowRecord.amount - totalPaid}
-            </span>
+            <span className={styles.danger}>₹{borrowRecord.rem_amount}</span>
             <p>Remaining Balance</p>
           </div>
           <div>
-            <span className={styles.danger}>₹{totalPaid}</span>
+            <span className={styles.danger}>
+              ₹{borrowRecord.amount - borrowRecord.rem_amount}
+            </span>
             <p>Total Paid</p>
           </div>
         </div>
@@ -87,14 +88,16 @@ export default function CustomerBorrowRecord() {
       <div className={styles.content}>
         <div className={styles.title}>
           <Heading as="h2">Pay records</Heading>
-          <AddPayRecord
-            borrowId={recordId}
-            onRefetch={() => {
-              if (cusId != null) {
-                mutate(cusId);
-              }
-            }}
-          />
+          {isCompleted && (
+            <AddPayRecord
+              borrowId={recordId}
+              onRefetch={() => {
+                if (cusId != null) {
+                  mutate(cusId);
+                }
+              }}
+            />
+          )}
         </div>
         <br />
         <List.Root>
