@@ -29,6 +29,7 @@ export default function BorrowRecordItem({
       }}
     >
       <div className={styles.list_item}>
+        {process.env.NODE_ENV == "development" && <span> {borrowId}</span>}
         <div className={styles.content}>
           <span>{date}</span>
           <p>{note}</p>

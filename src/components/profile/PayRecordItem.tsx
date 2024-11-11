@@ -17,9 +17,9 @@ export default function PayRecordItem({
   return (
     <List.Item>
       <div className={styles.list_item}>
+        {process.env.NODE_ENV == "development" && <span> {pay_record_id}</span>}
         <div className={styles.content}>
           <span>{createdAt}</span>
-
           <p>{note}</p>
         </div>
         <div className={styles.footer}>

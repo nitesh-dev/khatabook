@@ -1,4 +1,4 @@
-import ListItem from "@/components/home/ListItem";
+import CustomerItem from "@/components/home/CustomerItem";
 import styles from "../styles/home.module.scss";
 import { Heading, List, Button, Spinner } from "@chakra-ui/react";
 import { useEffect } from "react";
@@ -58,7 +58,7 @@ export default function Home() {
         ) : (
           <List.Root>
             {customers.map((c) => (
-              <ListItem
+              <CustomerItem
                 name={c.name}
                 borrowed={1000}
                 lastTime={c.updated_at.toString()}

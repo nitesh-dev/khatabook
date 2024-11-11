@@ -9,7 +9,7 @@ type ListItemProps = {
   lastTime: string;
   id: number;
 };
-export default function ListItem({
+export default function CustomerItem({
   name,
   borrowed,
   lastTime,
@@ -24,6 +24,7 @@ export default function ListItem({
     >
       <div className={styles.list_item}>
         <div className={styles.left}>
+          {process.env.NODE_ENV == "development" && <span> {id}</span>}
           <Avatar size="md" name={name} />
           <div>
             <Heading as="h3">{name}</Heading>
