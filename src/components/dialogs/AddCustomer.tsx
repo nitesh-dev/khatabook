@@ -16,7 +16,7 @@ import { FormEvent, useEffect, useState } from "react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, Controller } from "react-hook-form";
-import { useApi, usePromise } from "@/pages/utils";
+import { useApi, usePromise } from "@/lib/utils";
 import Api from "@/lib/api/Api";
 import { toaster } from "../ui/toaster";
 import { useShallowAppStore } from "@/store/app";

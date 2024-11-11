@@ -6,7 +6,7 @@ import { LuArrowLeft } from "react-icons/lu";
 import { Avatar } from "@/components/ui/avatar";
 import BorrowRecordItem from "@/components/profile/BorrowRecordItem";
 import { useRouter } from "next/router";
-import { useApi } from "@/pages/utils";
+import { useApi } from "@/lib/utils";
 import Api from "@/lib/api/Api";
 import { toaster } from "@/components/ui/toaster";
 import { useEffect } from "react";

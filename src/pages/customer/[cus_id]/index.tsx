@@ -16,7 +16,7 @@ import BorrowRecordItem from "@/components/profile/BorrowRecordItem";
 import { useRouter } from "next/router";
 import { toaster } from "@/components/ui/toaster";
 import Api from "@/lib/api/Api";
-import { useApi } from "@/pages/utils";
+import { useApi } from "@/lib/utils";
 import { useShallowAppStore } from "@/store/app";
 import { useEffect } from "react";
 

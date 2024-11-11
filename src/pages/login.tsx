@@ -40,7 +40,7 @@ export default function Login() {
       router.replace("/");
     } else {
       toaster.create({
-        description: res.errorMessage?.error,
+        description: res.errorMessage,
         type: "error",
       });
     }

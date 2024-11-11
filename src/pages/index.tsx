@@ -4,7 +4,7 @@ import { Heading, List, Button, Spinner } from "@chakra-ui/react";
 import { useEffect } from "react";
 import Api from "@/lib/api/Api";
 import AddCustomerDialog from "@/components/dialogs/AddCustomer";
-import { useApi } from "./utils";
+import { useApi } from "../lib/utils";
 import { useShallowAppStore } from "@/store/app";
 import { toaster } from "@/components/ui/toaster";
 
