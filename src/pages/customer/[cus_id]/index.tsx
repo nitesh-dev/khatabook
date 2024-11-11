@@ -45,21 +45,24 @@ export default function CustomerProfile() {
     }
   }, [cusId]);
 
-  //TODO add case like borrowStatus==completed
   const totalBorrowed = useMemo(() => {
     if (!customer) return 0;
-    return customer.records.reduce((sum, r) => {
-      return sum + r.amount;
-    }, 0);
+    return customer.records
+      .filter((r) => r.status != "COMPLETED")
+      .reduce((sum, r) => {
+        return sum + r.amount;
+      }, 0);
   }, [customer]);
 
   const totalPaid = useMemo(() => {
     if (!customer) return 0;
-    return customer.records.reduce((sum, r) => {
-      return r.pay_records.reduce((sum, p) => {
-        return sum + p.amount;
-      }, sum);
-    }, 0);
+    return customer.records
+      .filter((r) => r.status != "COMPLETED")
+      .reduce((sum, r) => {
+        return r.pay_records.reduce((sum, p) => {
+          return sum + p.amount;
+        }, sum);
+      }, 0);
   }, [customer]);
 
   if (status == "loading" || status == "initial") {

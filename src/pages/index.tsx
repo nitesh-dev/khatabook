@@ -27,22 +27,25 @@ export default function Home() {
     }
   }, [status]);
 
-  //TODO add case like borrowStatus==completed
   const totalBorrowed = useMemo(() => {
     return customers.reduce((sum, c) => {
-      return c.records.reduce((sum, r) => {
-        return sum + r.amount;
-      }, sum);
+      return c.records
+        .filter((r) => r.status != "COMPLETED")
+        .reduce((sum, r) => {
+          return sum + r.amount;
+        }, sum);
     }, 0);
   }, [customers]);
 
   const totalPaid = useMemo(() => {
     return customers.reduce((sum, c) => {
-      return c.records.reduce((sum, r) => {
-        return r.pay_records.reduce((sum, p) => {
-          return sum + p.amount;
+      return c.records
+        .filter((r) => r.status != "COMPLETED")
+        .reduce((sum, r) => {
+          return r.pay_records.reduce((sum, p) => {
+            return sum + p.amount;
+          }, sum);
         }, sum);
-      }, sum);
     }, 0);
   }, [customers]);
 
