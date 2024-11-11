@@ -19,10 +19,12 @@ import Api from "@/lib/api/Api";
 import { useApi } from "@/lib/utils";
 import { useShallowAppStore } from "@/store/app";
 import { useEffect } from "react";
+import AddBorrowRecord from "@/components/dialogs/AddBorrowRecord";
 
 export default function CustomerProfile() {
   const router = useRouter();
   const { cus_id } = router.query as any;
+  const cusId = +cus_id || undefined;
 
   //find the customer if exist or load from database
   // const { customer, setCustomers } = useShallowAppStore((s) => ({
@@ -38,10 +40,10 @@ export default function CustomerProfile() {
   }, [status]);
 
   useEffect(() => {
-    if (cus_id != null) {
-      mutate(cus_id);
+    if (cusId != null) {
+      mutate(cusId);
     }
-  }, [cus_id]);
+  }, [cusId]);
 
   if (status == "loading" || status == "initial") {
     return (
@@ -51,7 +53,7 @@ export default function CustomerProfile() {
     );
   }
 
-  if (!customer) {
+  if (!customer || !cusId) {
     return <VStack>Customer not found</VStack>;
   }
   return (
@@ -85,7 +87,15 @@ export default function CustomerProfile() {
       <div className={styles.content}>
         <div className={styles.title}>
           <Heading as="h2">Borrow Records</Heading>
-          <Button>Add Record</Button>
+          {/* <Button>Add Record</Button> */}
+          <AddBorrowRecord
+            cusId={cusId}
+            onRefetch={() => {
+              if (cusId != null) {
+                mutate(cusId);
+              }
+            }}
+          />
         </div>
         <br />
         <Tabs.Root defaultValue="active">
@@ -100,7 +110,7 @@ export default function CustomerProfile() {
                 .map((r) => (
                   <BorrowRecordItem
                     borrowId={r.id}
-                    cusId={cus_id}
+                    cusId={cusId}
                     amount={r.amount}
                     due={r.rem_amount}
                     date={r.created_at.toString()}

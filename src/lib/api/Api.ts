@@ -51,6 +51,7 @@ namespace Api {
     cusId: number;
     amount: number;
     borrowDate?: string;
+    note: string
   }
   export async function createBorrow(
     borrow: CreateBorrowRecord

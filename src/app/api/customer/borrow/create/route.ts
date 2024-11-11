@@ -17,6 +17,7 @@ interface Body {
   cusId: number;
   amount: number;
   borrowDate?: string;
+  note: string
 }
 
 export function POST(request: Request) {
@@ -35,6 +36,7 @@ export function POST(request: Request) {
           status: RecordStatus.PENDING,
           rem_amount: req.body.amount,
           customer_id: req.body.cusId,
+          notes: req.body.note || ""
         },
       });
 
