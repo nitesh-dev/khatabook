@@ -4,7 +4,7 @@ import { Heading, List, Button, Spinner } from "@chakra-ui/react";
 import { useEffect, useMemo } from "react";
 import Api from "@/lib/api/Api";
 import AddCustomerDialog from "@/components/dialogs/AddCustomer";
-import { useApi } from "../lib/utils";
+import { customerBorrowed, customerPaid, useApi } from "../lib/utils";
 import { useShallowAppStore } from "@/store/app";
 import { toaster } from "@/components/ui/toaster";
 
@@ -86,7 +86,8 @@ export default function Home() {
             {customers.map((c) => (
               <CustomerItem
                 name={c.name}
-                borrowed={1000}
+                borrowed={customerBorrowed(c)}
+                paid={customerPaid(c)}
                 lastTime={c.updated_at.toString()}
                 key={c.id}
                 id={c.id}

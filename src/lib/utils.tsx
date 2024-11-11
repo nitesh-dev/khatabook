@@ -1,6 +1,7 @@
 "use client";
 import Api from "@/lib/api/Api";
 import { AxiosResult } from "@/lib/DataType";
+import { Customer } from "@/store/app";
 import { useState, useCallback, useEffect } from "react";
 
 export type Status = "initial" | "loading" | "success" | "error";
@@ -120,6 +121,23 @@ export function useLoadDataHook() {
 
 export async function sleep(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+export function customerBorrowed(c: Customer) {
+  return c.records
+    .filter((r) => r.status != "COMPLETED")
+    .reduce((sum, r) => {
+      return sum + r.amount;
+    }, 0);
+}
+export function customerPaid(c: Customer) {
+  return c.records
+    .filter((r) => r.status != "COMPLETED")
+    .reduce((sum, r) => {
+      return r.pay_records.reduce((sum, p) => {
+        return sum + p.amount;
+      }, sum);
+    }, 0);
 }
 
 // import useSWR from "swr";

@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 type ListItemProps = {
   name: string;
   borrowed: number;
+  paid: number;
   lastTime: string;
   id: number;
 };
@@ -13,6 +14,7 @@ export default function CustomerItem({
   name,
   borrowed,
   lastTime,
+  paid,
   id,
 }: ListItemProps) {
   const router = useRouter();
@@ -31,9 +33,12 @@ export default function CustomerItem({
             <span className="label">{lastTime}</span>
           </div>
         </div>
-        {/* <div className={styles.right}>
+        <div className={styles.right}>
           <Heading as="h3">₹{borrowed}</Heading>
-        </div> */}
+          <Heading as="h5" size="sm">
+            ₹{paid}
+          </Heading>
+        </div>
       </div>
     </List.Item>
   );

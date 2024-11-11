@@ -8,15 +8,18 @@
   align-items: center;
   cursor: pointer;
 
-  .left{
+  .left {
     display: flex;
     align-items: center;
     gap: 1rem;
   }
 
-  .right{
-    h3{
-        color: var(--danger);
+  .right {
+    h3 {
+      color: var(--success);
+    }
+    h5 {
+      color: var(--danger);
     }
   }
 }
