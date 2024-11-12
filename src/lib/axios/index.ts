@@ -4,7 +4,7 @@ import type { AxiosResult } from "../DataType";
 const AxiosApiInstance = axios.create({
   //@ts-ignore
   // baseURL: import.meta.env.VITE_SERVER_URL,
-  baseURL: "http://localhost:3000",
+  baseURL: "",
 });
 
 // Function to get the bearer token from localStorage
