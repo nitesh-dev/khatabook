@@ -1,5 +1,5 @@
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
   previewFeatures = ["relationJoins"]
 }
 
@@ -12,19 +12,13 @@ model borrow_record {
   id          Int          @id @default(autoincrement())
   customer_id Int
   amount      Float
-  notes       String       @default("nothing")
   rem_amount  Float
   borrow_date DateTime
   status      RecordStatus @default(PENDING)
   created_at  DateTime     @default(now())
+  notes       String       @default("nothing")
+  customer    customer     @relation(fields: [customer_id], references: [id])
   pay_records pay_record[]
-  customer    customer?    @relation(fields: [customer_id], references: [id])
-}
-
-enum RecordStatus {
-  IDEAL
-  PENDING
-  COMPLETED
 }
 
 model credential {
@@ -45,11 +39,17 @@ model customer {
 }
 
 model pay_record {
-  id               Int            @id @default(autoincrement())
+  id               Int           @id @default(autoincrement())
   amount           Float
   notes            String
   payment_date     DateTime
-  created_at       DateTime       @default(now())
-  borrow_record    borrow_record? @relation(fields: [borrow_record_id], references: [id])
+  created_at       DateTime      @default(now())
   borrow_record_id Int
+  borrow_record    borrow_record @relation(fields: [borrow_record_id], references: [id])
+}
+
+enum RecordStatus {
+  IDEAL
+  PENDING
+  COMPLETED
 }
